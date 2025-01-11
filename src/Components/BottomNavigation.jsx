@@ -22,7 +22,7 @@ const BottomNavigation = () => {
 
       {/* Revise Button */}
       <NavLink
-        to="/revise"
+        to="/review"
         className={({ isActive }) =>
           `flex flex-col items-center font-bold text-xs sm:text-sm transform hover:scale-110 transition-transform duration-300 ${
             isActive
