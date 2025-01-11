@@ -5,6 +5,7 @@ import Cards from "./Screens/Cards";
 import Review from "./Screens/Review";
 import AddChapters from "./Screens/Add";
 import "./App.css";
+import LocalStorageCards from "./Screens/LocalStorage";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
 
         {/* Review route */}
         <Route path="/review" element={<Review />} />
+        <Route path="/review/:chapterId" element={<LocalStorageCards />} />
 
         {/* Add Chapters route */}
         <Route path="/add" element={<AddChapters />} />

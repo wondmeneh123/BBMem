@@ -1,14 +1,19 @@
+import { Link } from "react-router-dom";
+import BottomNavigation from "../Components/BottomNavigation";
 import Header from "../Components/Header";
 
 const Review = () => {
   const chapters = [
-    { title: "Intro", icon: "📘" },
-    { title: "Peoples & Cultures", icon: "🌍" },
-    { title: "States & Societies", icon: "🏛️" },
-    { title: "Medieval Politics", icon: "⛪" },
-    { title: "Conflicts & Integration", icon: "⚔️" },
-    { title: "Modernization", icon: "🚀" },
-    { title: "Recent Developments", icon: "🏢" },
+    { title: "Intro", icon: "📘", id: "3r8Si64GhK0Te7hvz0Ni" },
+    { title: "Peoples & Cultures", icon: "🌍", id: "EK2q0OVmsKIYW8BqhDq1" },
+    { title: "States & Societies", icon: "🏛️", id: "TmtDMCTCQojNbtwmGwL0" },
+    { title: "Medieval Politics", icon: "⛪", id: "mstVvIy9RejT6KPSNU9J" },
+    {
+      title: "Conflicts & Integration",
+      icon: "⚔️",
+      id: "mstVvIy9RejT6KPSNU9J",
+    },
+    { title: "Modernization", icon: "🚀", id: "sfG2A5RxFwA8HmoyWLxC" },
   ];
 
   return (
@@ -42,7 +47,10 @@ const Review = () => {
               index % 2 === 0 ? "justify-start" : "justify-end"
             } my-16`}
           >
-            <div className="flex items-center mx-2">
+            <Link
+              to={`/review/${chapter.id}`}
+              className="flex items-center mx-2"
+            >
               <div className="w-14 h-14 bg-yellow-400 rounded-full flex justify-center items-center shadow-lg">
                 <span className="text-xl">{chapter.icon}</span>
               </div>
@@ -51,7 +59,7 @@ const Review = () => {
                   {chapter.title}
                 </h2>
               </div>
-            </div>
+            </Link>
           </div>
         ))}
       </div>

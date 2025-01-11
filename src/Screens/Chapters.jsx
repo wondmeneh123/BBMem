@@ -11,15 +11,14 @@ const Chapters = () => {
   useEffect(() => {
     const fetchChapters = async () => {
       try {
-        const collectionRef = collection(db, "chapters"); // Reference to the 'chapters' collection
-        const snapshot = await getDocs(collectionRef); // Fetch all documents in the collection
-
+        const collectionRef = collection(db, "chapters");
+        const snapshot = await getDocs(collectionRef);
         const chaptersData = snapshot.docs.map((doc) => ({
-          id: doc.id, // Include the document ID
-          ...doc.data(), // Spread the document fields
+          id: doc.id,
+          ...doc.data(),
         }));
 
-        setChapters(chaptersData); // Update state with the fetched data
+        setChapters(chaptersData);
       } catch (error) {
         console.error("Error fetching chapters from Firestore: ", error);
       }
@@ -30,12 +29,9 @@ const Chapters = () => {
 
   return (
     <div className="bg-gradient-to-r from-pink-200 to-purple-300 min-h-screen flex flex-col items-center scr">
-      {/* Fixed Header */}
       <div className="fixed top-0 left-0 w-full z-50">
         <Header />
       </div>
-
-      {/* Content with Zigzag Path */}
       <div className="w-full max-w-4xl mt-[100px] mb-[70px] relative ">
         <svg
           viewBox="0 0 400 1600"

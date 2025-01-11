@@ -1,59 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom"; // Ensure you're using 'useParams' to extract the chapterId from URL
+import { useParams, Link } from "react-router-dom"; // Import useParams
 import Header from "../Components/Header";
 import ask from "../assets/ask.png";
 import answer from "../assets/answer.png";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import { db } from "../fb"; // Import your Firebase Firestore configuration
-import loadingd from "../assets/loading.png";
-import correctAudio from "../assets/correct.m4a";
-import wrongtAudio from "../assets/wrong.m4a";
-const Cards = () => {
-  const { chapterId } = useParams(); // Destructure 'chapterId' from useParams
+import loadingd from "../assets/loading.png"; // Loading icon
+import BottomNavigation from "../Components/BottomNavigation";
+
+const LocalStorageCards = () => {
+  const { chapterId } = useParams(); // Extract chapterId from URL params
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true); // For loading state
-  const [active, SetActive] = useState(false);
+
   useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        setLoading(true); // Start loading
-        console.log("Fetching cards for chapterId:", chapterId); // Log the chapterId
+    const responses = JSON.parse(localStorage.getItem("responses")) || [];
 
-        // Reference to Firestore cards collection
-        const cardsRef = collection(db, "cards");
+    // Filter the responses by chapterId from the URL
+    const filtered = responses.filter(
+      (response) => response.chapterId === chapterId
+    );
 
-        // Query to fetch cards where chapterId matches the one in the URL
-        const q = query(cardsRef, where("chapterId", "==", chapterId));
-
-        // Fetch the query results
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          // Map through the query results to get the data
-          const fetchedCards = querySnapshot.docs.map((doc) => doc.data());
-          setCards(fetchedCards); // Set the fetched cards to state
-        } else {
-          console.log("No cards found for this chapterId!");
-        }
-      } catch (error) {
-        console.error("Error fetching cards:", error); // Log any errors
-      } finally {
-        setLoading(false); // Stop loading once data is fetched
-      }
-    };
-
-    fetchCards(); // Fetch cards when component mounts or chapterId changes
-  }, [chapterId]); // hapterId]); // Depend on chapterId so it triggers re-fetch if chapterId changes
+    setCards(filtered); // Set the filtered cards
+    setLoading(false); // Stop loading once data is fetched from localStorage
+  }, [chapterId]);
 
   // Handle flip of the flashcard
   const handleFlip = () => setIsFlipped(!isFlipped);
@@ -73,53 +43,19 @@ const Cards = () => {
       setCurrentIndex(currentIndex - 1);
     }
   };
-  const handleIDidntKnow = () => {
-    const currentCard = cards[currentIndex];
-    const responses = JSON.parse(localStorage.getItem("responses")) || [];
 
-    // Check if the question already exists in localStorage
-    const existingResponse = responses.find(
-      (response) =>
-        response.chapterId === chapterId &&
-        response.question === currentCard.question
-    );
-    const audio = new Audio(wrongtAudio); // Add the correct path to the file
-    audio.play();
-    console.log("I Know button clicked!");
-    if (!existingResponse) {
-      // If no duplicate, add to responses
-      responses.push({
-        cardId: currentCard.id, // Add the cardId to the response
-        chapterId,
-        question: currentCard.question,
-        answer: currentCard.answer,
-      });
-
-      // Save the updated responses back to localStorage
-      localStorage.setItem("responses", JSON.stringify(responses));
-      console.log("Response saved to localStorage:", responses);
-    } else {
-      console.log("This question has already been saved.");
-    }
-  };
-  const handleIKnow = () => {
-    const audio = new Audio(correctAudio); // Add the correct path to the file
-    audio.play();
-    console.log("I Know button clicked!");
-  };
-
-  // Show loading message while fetching cards
+  // Show loading message while fetching cards from localStorage
   if (loading) {
     return (
       <div className="h-screen w-full bg-gradient-to-r from-pink-200 flex items-center flex-col justify-center to-purple-300">
-        <img src={loadingd} width={300} height={300} />
+        <img src={loadingd} width={300} height={300} alt="Loading" />
         <h2 className="text-white text-4xl">Loading ...</h2>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-r from-pink-200 to-purple-300 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-gradient-to-r from-pink-200 to-purple-300 min-h-screen flex flex-col items-center">
       {/* Fixed Header */}
       <div className="fixed top-0 left-0 w-full z-50">
         <Header />
@@ -127,7 +63,7 @@ const Cards = () => {
 
       {/* Content Area */}
       <div className="mt-[150px] mb-[70px] w-full flex flex-col items-center px-4 h-full">
-        {currentIndex < cards.length ? (
+        {cards.length > 0 ? (
           <>
             {/* Flashcard */}
             <div
@@ -160,25 +96,7 @@ const Cards = () => {
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className="flex gap-4 mt-6">
-              <button
-                onClick={handleIKnow}
-                className="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg transform hover:scale-105 transition duration-300"
-              >
-                I Know 😄
-              </button>
-              <button
-                onClick={handleIDidntKnow}
-                className={`hover:bg-red-500 ${
-                  active ? "bg-red-500" : "bg-red-400"
-                } text-white py-2 px-4 rounded-lg shadow-lg transform hover:scale-105 transition duration-300`}
-              >
-                I Didn't Know 😔
-              </button>
-            </div>
-
-            {/* Navigation */}
+            {/* Navigation and Buttons */}
             <div className="flex justify-between items-center w-full max-w-md mt-8">
               <button
                 onClick={handlePrev}
@@ -223,8 +141,11 @@ const Cards = () => {
       </div>
 
       {/* Fixed Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 w-full z-50">
+        <BottomNavigation />
+      </div>
     </div>
   );
 };
 
-export default Cards;
+export default LocalStorageCards;
