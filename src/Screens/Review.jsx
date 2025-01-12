@@ -4,20 +4,14 @@ import Header from "../Components/Header";
 
 const Review = () => {
   const chapters = [
-    { title: "Intro", icon: "📘", id: "3r8Si64GhK0Te7hvz0Ni" },
-    { title: "Peoples & Cultures", icon: "🌍", id: "EK2q0OVmsKIYW8BqhDq1" },
-    { title: "States & Societies", icon: "🏛️", id: "TmtDMCTCQojNbtwmGwL0" },
-    { title: "Medieval Politics", icon: "⛪", id: "mstVvIy9RejT6KPSNU9J" },
-    {
-      title: "Conflicts & Integration",
-      icon: "⚔️",
-      id: "mstVvIy9RejT6KPSNU9J",
-    },
-    { title: "Modernization", icon: "🚀", id: "sfG2A5RxFwA8HmoyWLxC" },
+    { title: "Chapter 2 & 3", icon: "📘", id: "pXMKx3CR6Bdd7paLTMvI" },
+    { title: "Chapter 4", icon: "🌍", id: "FapKkDPMX02RPTeoSPfo" },
+    { title: "Chapter 5", icon: "🏛️", id: "sG67sl5dfhwEbEAouHTf" },
+    { title: "Chapter 6", icon: "⛪", id: "VO4UnVMh4iBY3MdlNOCb" },
   ];
 
   return (
-    <div className="bg-gradient-to-r from-pink-200 to-purple-300 min-h-screen flex flex-col items-center">
+    <div className="bg-gradient-to-r from-pink-200 to-purple-300 min-h-screen flex flex-col items-center justify-center">
       {/* Fixed Header */}
       <div className="fixed top-0 left-0 w-full z-50">
         <Header />
@@ -25,6 +19,9 @@ const Review = () => {
 
       {/* Content with Zigzag Path */}
       <div className="w-full max-w-4xl mt-[100px] mb-[70px] relative ">
+        <h1 className="text-black font-semibold text-center text-3xl">
+          Concepts you MISS
+        </h1>
         <svg
           viewBox="0 0 400 1600"
           xmlns="http://www.w3.org/2000/svg"

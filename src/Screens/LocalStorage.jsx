@@ -55,7 +55,7 @@ const LocalStorageCards = () => {
   }
 
   return (
-    <div className="bg-gradient-to-r from-pink-200 to-purple-300 min-h-screen flex flex-col items-center">
+    <div className="bg-gradient-to-r from-pink-200 to-purple-300 min-h-screen flex flex-col items-center justify-center">
       {/* Fixed Header */}
       <div className="fixed top-0 left-0 w-full z-50">
         <Header />

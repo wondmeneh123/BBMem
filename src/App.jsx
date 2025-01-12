@@ -6,6 +6,7 @@ import Review from "./Screens/Review";
 import AddChapters from "./Screens/Add";
 import "./App.css";
 import LocalStorageCards from "./Screens/LocalStorage";
+import UpdateAnswers from "./Screens/Add";
 
 const App = () => {
   return (

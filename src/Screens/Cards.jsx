@@ -12,12 +12,12 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../fb"; // Import your Firebase Firestore configuration
+import { db } from "../fb";
 import loadingd from "../assets/loading.png";
 import correctAudio from "../assets/correct.m4a";
 import wrongtAudio from "../assets/wrong.m4a";
 const Cards = () => {
-  const { chapterId } = useParams(); // Destructure 'chapterId' from useParams
+  const { chapterId } = useParams();
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cards, setCards] = useState([]);

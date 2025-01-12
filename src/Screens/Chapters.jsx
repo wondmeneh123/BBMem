@@ -13,10 +13,12 @@ const Chapters = () => {
       try {
         const collectionRef = collection(db, "chapters");
         const snapshot = await getDocs(collectionRef);
-        const chaptersData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const chaptersData = snapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .sort((a, b) => a.title.localeCompare(b.title)); // Sort by title
 
         setChapters(chaptersData);
       } catch (error) {
@@ -28,7 +30,7 @@ const Chapters = () => {
   }, [db]);
 
   return (
-    <div className="bg-gradient-to-r from-pink-200 to-purple-300 min-h-screen flex flex-col items-center scr">
+    <div className="bg-gradient-to-r from-pink-200 to-purple-300 min-h-screen flex flex-col items-center justify-center scr">
       <div className="fixed top-0 left-0 w-full z-50">
         <Header />
       </div>
@@ -61,7 +63,7 @@ const Chapters = () => {
               </div>
               <div className="ml-4 bg-white p-4 rounded-lg shadow-lg">
                 <h2 className="text-lg font-bold text-purple-600">
-                  Chapter {index + 1}
+                  Chapter {chapter.title}
                 </h2>
               </div>
             </Link>
